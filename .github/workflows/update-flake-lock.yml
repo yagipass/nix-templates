@@ -18,12 +18,40 @@ jobs:
       - uses: nixbuild/nix-quick-install-action@9f63be77f412a248c9d9a65a4c82cf066cdf8f0c # v35
 
       - name: Update all template locks
+        id: update
         run: |
           set -euo pipefail
+
+          versions() {
+            nix eval --json "./$1#devShells.x86_64-linux.default.nativeBuildInputs" \
+              --apply 'ps: map (p: { name = p.pname or p.name; version = p.version or null; }) ps' \
+              | jq -c 'map(select(.version != null))'
+          }
+
+          rows=""
           for dir in java*-maven; do
             echo "== $dir"
+            before=$(versions "$dir")
             nix flake update --flake "./$dir"
+            after=$(versions "$dir")
+            rows+=$(jq -rn --arg dir "$dir" --argjson before "$before" --argjson after "$after" '
+              ($before | map({(.name): .version}) | add) as $old
+              | $after[]
+              | "| \($dir) | \(.name) | `\($old[.name] // "N/A")` | `\(.version)`\(if $old[.name] != .version then " :arrow_up:" else "" end) |"
+            ')$'\n'
           done
+          {
+            echo "body<<EOF"
+            echo "Automated \`nix flake update\` for all templates."
+            echo
+            echo "## Package Versions"
+            echo
+            echo "| Template | Package | Old | New |"
+            echo "|----------|---------|-----|-----|"
+            printf '%s' "$rows"
+            echo
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Verify dev shells still evaluate
         run: |
@@ -40,5 +68,7 @@ jobs:
           delete-branch: true
           commit-message: "chore: update flake.lock"
           title: "chore: update flake.lock"
-          body: |
-            Automated `nix flake update` for all templates.
+          labels: |
+            automated
+            dependencies
+          body: ${{ steps.update.outputs.body }}
