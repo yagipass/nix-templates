@@ -72,3 +72,29 @@ jobs:
             automated
             dependencies
           body: ${{ steps.update.outputs.body }}
+
+  update-root:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: nixbuild/nix-quick-install-action@9f63be77f412a248c9d9a65a4c82cf066cdf8f0c # v35
+
+      - name: Update root lock
+        run: nix flake update
+
+      - name: Verify checks still pass
+        run: nix flake check . --show-trace
+
+      - uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: chore/update-root-flake-lock
+          delete-branch: true
+          commit-message: "chore: update root flake.lock"
+          title: "chore: update root flake.lock"
+          labels: |
+            automated
+            dependencies
+          body: |
+            Automated `nix flake update` for the root flake (formatter and git hooks tooling).
