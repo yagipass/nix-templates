@@ -1,2 +1,3 @@
 .postgres/
 .direnv/
+.pre-commit-config.yaml

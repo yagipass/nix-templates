@@ -48,6 +48,20 @@ A template's flake.lock is only the source that gets copied, so the update only
 affects projects that run `nix flake init` from then on. To update a project that
 has already been initialized, run `nix flake update` in that project's root.
 
+The root flake.lock only pins the formatter and git hook tooling. Update it
+separately with `nix flake update` in the repository root.
+
+## Formatting and linting
+
+The root flake provides a dev shell that installs a pre-commit hook. Run
+`direnv allow` (or `nix develop`) in the repository root once to install it.
+The hook runs treefmt (nixfmt), deadnix, and statix on staged files.
+
+```sh
+nix fmt            # format everything
+nix flake check .  # formatting + deadnix + statix + template evaluation (what CI runs)
+```
+
 ## Verifying the templates
 
 The templates are flakes themselves, so verify changes with:
