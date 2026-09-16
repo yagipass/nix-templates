@@ -1,6 +1,4 @@
-# nix-templates
-
-A collection of flake templates for project dev shells.
+# My personal collection of flake templates
 
 ## Usage
 
