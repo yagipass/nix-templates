@@ -61,7 +61,7 @@ spec:
     allow_merge_commit: false
     allow_squash_merge: true
     allow_rebase_merge: false
-    allow_auto_merge: false
+    allow_auto_merge: true
     auto_delete_head_branches: true
     squash_merge_commit_title: PR_TITLE
     squash_merge_commit_message: PR_BODY
@@ -76,6 +76,9 @@ spec:
   - name: protect-main
     target: branch
     enforcement: active
+    bypass_actors:
+    - role: admin
+      bypass_mode: pull_request
     conditions:
       ref_name:
         include:
@@ -87,6 +90,11 @@ spec:
         require_code_owner_review: false
         require_last_push_approval: false
         required_review_thread_resolution: true
+      required_status_checks:
+        strict_required_status_checks_policy: false
+        contexts:
+        - context: check
+          app: github-actions
       non_fast_forward: true
       update: false
       deletion: true
