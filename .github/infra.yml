@@ -70,7 +70,7 @@ spec:
   release_immutability: false
   security:
     vulnerability_alerts: true
-    automated_security_fixes: false
+    automated_security_fixes: true
     private_vulnerability_reporting: true
   rulesets:
   - name: protect-main
