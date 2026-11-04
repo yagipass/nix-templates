@@ -101,18 +101,11 @@
         pgWhere = pkgs.writeShellScriptBin "pg-where" ''
           set -euo pipefail
           ps -A -ww -o pid=,command= | awk '
-            {
-              for (i = 2; i <= NF; i++) {
-                if ($i == "-D" && i+1 <= NF) {
-                  pgdata = $(i+1)
-                  if (pgdata ~ /\/\.postgres($|\/)/) {
-                    proj = pgdata
-                    sub(/\/\.postgres($|\/.*)/, "", proj)
-                    printf "%-7s %s\n", $1, proj
-                    found = 1
-                  }
-                  break
-                }
+            match($0, /^ *[0-9]+ +([^ ]*\/)?postgres -D /) {
+              pgdata = substr($0, RLENGTH + 1)
+              if (match(pgdata, /\/\.postgres($|\/| -)/)) {
+                printf "%-7s %s\n", $1, substr(pgdata, 1, RSTART - 1)
+                found = 1
               }
             }
             END { if (!found) print "(no devShell postgres running)" > "/dev/stderr" }
