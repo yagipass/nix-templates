@@ -149,7 +149,7 @@
             echo "  pg-stop   — stop server"
             echo "  pg-status — show server status"
             echo "  pg-where  — show which directory each postmaster was started from"
-            echo "  JDBC URL  : jdbc:postgresql://localhost:5432/$PGDATABASE  ($PGUSER / $PGPASSWORD)"
+            echo "  JDBC URL  : jdbc:postgresql://localhost:5432/$PGDATABASE  ($PGUSER)"
           '';
         };
       }
