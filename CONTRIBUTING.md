@@ -45,7 +45,7 @@ A pull request:
 
 There are no releases. Projects copy a template from `main` with `nix flake init`.
 
-`update-flake-lock.yml` opens two pull requests every Monday, one that updates the locks of the templates and one that updates the root lock. Dependabot updates the GitHub Actions.
+`update-flake-lock.yml` runs every Monday. When a lock changes, it opens or updates a pull request, one for the locks of the templates and one for the root lock. Dependabot updates the GitHub Actions.
 
 ## Repository settings
 
