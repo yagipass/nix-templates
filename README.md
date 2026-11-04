@@ -1,4 +1,9 @@
-# My personal collection of flake templates
+# nix-templates
+
+[![CI](https://github.com/yagipass/nix-templates/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/yagipass/nix-templates/actions/workflows/ci.yml?query=branch%3Amain)
+[![License](https://img.shields.io/github/license/yagipass/nix-templates)](LICENSE)
+
+My personal collection of Nix flake templates for project dev shells.
 
 ## Usage
 
@@ -7,27 +12,32 @@ nix flake init -t "github:yagipass/nix-templates#java8-maven"
 direnv allow
 ```
 
+Then add `.direnv/` and `.postgres/` to the project's `.gitignore`.
+
 ## Templates
 
-| Name | Contents |
-| --- | --- |
-| `java8-maven` | Java 8 (Zulu) + Maven + PostgreSQL 18. Includes helper commands such as `pg-start` / `pg-stop` |
-| `java11-maven` | Java 11 (Zulu) + Maven + PostgreSQL 18. Includes helper commands such as `pg-start` / `pg-stop` |
-| `java17-maven` | Java 17 (Zulu) + Maven + PostgreSQL 18. Includes helper commands such as `pg-start` / `pg-stop` |
-| `java21-maven` | Java 21 (Zulu) + Maven + PostgreSQL 18. Includes helper commands such as `pg-start` / `pg-stop` |
-| `java25-maven` | Java 25 (Zulu) + Maven + PostgreSQL 18. Includes helper commands such as `pg-start` / `pg-stop` |
+Each template provides a dev shell with a JDK, Maven, and PostgreSQL 18.
 
-## Formatting and linting
+| Template | JDK |
+|---|---|
+| `java8-maven` | Zulu 8 |
+| `java11-maven` | Zulu 11 |
+| `java17-maven` | Zulu 17 |
+| `java21-maven` | Zulu 21 |
+| `java25-maven` | Zulu 25 |
 
-The root flake provides a dev shell that installs a pre-commit hook. Run
-`direnv allow` (or `nix develop`) in the repository root once to install it.
-The hook runs treefmt (nixfmt), deadnix, and statix on staged files.
+## PostgreSQL
 
-```sh
-nix fmt            # format everything
-nix flake check .  # formatting + deadnix + statix + template evaluation (what CI runs)
-```
+`pg-start`, `pg-stop`, `pg-status`, and `pg-where` manage a server for the project. The dev shell lists them when you enter it. The first `pg-start` creates the data directory `.postgres/` in the project.
+
+- The role, database, and password are all `dev`. To use others, set `DEVSHELL_PG_USER`, `DEVSHELL_PG_DATABASE`, and `DEVSHELL_PG_PASSWORD` before entering the shell. A change applies only to a new `.postgres/`.
+- The server listens on `localhost:5432`, so only one project's server can run at a time. `pg-where` shows which project's server is running, unless the project path contains a space.
+- `pg-start` fails if the socket path `<project>/.postgres/.s.PGSQL.5432` is too long for the OS, which allows 103 bytes on macOS.
+
+## Development
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-This project is licensed under the MIT License. See [LICENSE](LICENSE).
+nix-templates is licensed under the [MIT License](LICENSE).
