@@ -2,7 +2,7 @@
   description = "Java8/Maven dev shell with PostgreSQL 18 for tests";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
@@ -16,7 +16,7 @@
       system:
       let
         pkgs = import nixpkgs { inherit system; };
-        jdk = pkgs.zulu8;
+        jdk = pkgs.zulu8.override { gtkSupport = false; };
         postgresql = pkgs.postgresql_18;
 
         pgInit = pkgs.writeShellScriptBin "pg-init" ''
