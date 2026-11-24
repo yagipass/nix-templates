@@ -1,5 +1,5 @@
 {
-  description = "Java21/Maven dev shell with PostgreSQL 18 for tests";
+  description = "Java21/Maven dev shell with PostgreSQL 19 for tests";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -17,7 +17,7 @@
       let
         pkgs = import nixpkgs { inherit system; };
         jdk = pkgs.zulu21;
-        postgresql = pkgs.postgresql_18;
+        postgresql = pkgs.postgresql_19;
 
         pgInit = pkgs.writeShellScriptBin "pg-init" ''
           set -euo pipefail
@@ -38,7 +38,7 @@
             echo "  Run: rm -rf '$PGDATA' && pg-start" >&2
             exit 1
           fi
-          echo "pg-init: initializing PostgreSQL 18 at $PGDATA ..."
+          echo "pg-init: initializing PostgreSQL 19 at $PGDATA ..."
           ${postgresql}/bin/initdb \
             --username=postgres \
             --locale=C \
@@ -137,7 +137,7 @@
             export PGDATABASE="''${DEVSHELL_PG_DATABASE:-dev}"
             export PGPASSWORD="''${DEVSHELL_PG_PASSWORD:-dev}"
 
-            echo "devShell ready: java21 + maven + postgresql 18"
+            echo "devShell ready: java21 + maven + postgresql 19"
             echo "  pg-start  — first run will initdb; then start on 127.0.0.1:5432"
             echo "  pg-stop   — stop server"
             echo "  pg-status — show server status"

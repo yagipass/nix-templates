@@ -16,7 +16,7 @@ Then add `.direnv/` and `.postgres/` to the project's `.gitignore`.
 
 ## Templates
 
-Each template provides a dev shell with a JDK, Maven, and PostgreSQL 18.
+Each template provides a dev shell with a JDK, Maven, and PostgreSQL 19.
 
 | Template | JDK |
 |---|---|
