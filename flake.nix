@@ -53,7 +53,7 @@
       flake.templates = {
         java8-maven = {
           path = ./java8-maven;
-          description = "Java 8 (Zulu) + Maven + PostgreSQL 19 dev shell (direnv-ready)";
+          description = "Java 8 (OpenJDK) + Maven + PostgreSQL 19 dev shell (direnv-ready)";
           welcomeText = ''
             # java8-maven dev shell
 
@@ -62,7 +62,7 @@
         };
         java11-maven = {
           path = ./java11-maven;
-          description = "Java 11 (Zulu) + Maven + PostgreSQL 19 dev shell (direnv-ready)";
+          description = "Java 11 (OpenJDK) + Maven + PostgreSQL 19 dev shell (direnv-ready)";
           welcomeText = ''
             # java11-maven dev shell
 

@@ -20,8 +20,8 @@ Each template provides a dev shell with a JDK, Maven, and PostgreSQL 19.
 
 | Template | JDK |
 |---|---|
-| `java8-maven` | Zulu 8 |
-| `java11-maven` | Zulu 11 |
+| `java8-maven` | OpenJDK 8 (Zulu on macOS) |
+| `java11-maven` | OpenJDK 11 (Zulu on macOS) |
 | `java17-maven` | Zulu 17 |
 | `java21-maven` | Zulu 21 |
 | `java25-maven` | Zulu 25 |
