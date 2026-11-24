@@ -16,7 +16,7 @@
       system:
       let
         pkgs = import nixpkgs { inherit system; };
-        jdk = pkgs.zulu17.override { gtkSupport = false; };
+        jdk = pkgs.zulu17;
         postgresql = pkgs.postgresql_18;
 
         pgInit = pkgs.writeShellScriptBin "pg-init" ''
